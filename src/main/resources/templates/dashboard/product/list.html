@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>List of customers</title>
+    <th:block th:replace="/dashboard/layout/head" />
+</head>
+
+<body>
+    <div class="container-fluid">
+        <th:block th:replace="/dashboard/product/header" />
+
+        <div class="content">
+            <table id="tbProduct" class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/assets/jquery/jquery-3.7.0.min.js"></script>
+    <script src="/assets/jquery/jquery.validate.min.js"></script>
+    <script src="/assets/bootstrap/v-5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/sweetalert2/sweetalert2.all.min.js"></script>
+
+    <script src="/assets/js/appBase.js"></script>
+
+    <script>
+        const page = {
+            url: {
+                getAllProducts: AppBase.API_PRODUCT
+            },
+            elements: {},
+            commands: {},
+            dialogs: {},
+        }
+
+        page.elements.tbProductBody = $('#tbProduct tbody')
+
+
+        page.commands.getAllProducts = () => {
+            $.ajax({
+                type: 'GET',
+                url: page.url.getAllProducts
+            })
+                .done((data) => {
+                    $.each(data, (index, item) => {
+                        const str = page.commands.renderProduct(item);
+
+                        page.elements.tbProductBody.append(str)
+                    })
+                })
+                .fail((jqXHR) => {
+                    console.log(jqXHR)
+                })
+        }
+
+        page.commands.renderProduct = (obj) => {
+            const imageUrl = AppBase.DOMAIN_CLOUDINARY + '/' + AppBase.IMAGE_SCALE_W_80_h_60_Q_90 + '/' + obj.avatar.fileFolder + '/' + obj.avatar.fileName;
+            return `
+                <tr>
+                    <td>${obj.id}</td>
+                    <td>${obj.title}</td>
+                    <td>
+                        <img class="product-avatar" src="${imageUrl}" alt="">
+                    </td>
+                    <td>${obj.price}</td>
+                    <td>${obj.quantity}</td>
+                    <td>${obj.description}</td>
+                    <td>${obj.categoryTitle}</td>
+                    <td>...</td>
+                </tr>
+            `;
+        }
+
+
+        page.loadData = () => {
+            page.commands.getAllProducts();
+        }
+
+        page.initializeControlEvent = () => {
+
+        }
+
+        $(() => {
+            page.loadData();
+
+            page.initializeControlEvent();
+        })
+    </script>
+
+</body>
+
+</html>
