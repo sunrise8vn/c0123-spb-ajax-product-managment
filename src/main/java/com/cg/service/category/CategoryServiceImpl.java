@@ -1,6 +1,7 @@
 package com.cg.service.category;
 
 import com.cg.model.Category;
+import com.cg.model.dto.category.CategoryDTO;
 import com.cg.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,11 @@ public class CategoryServiceImpl implements ICategoryService{
     @Override
     public List<Category> findAll() {
         return null;
+    }
+
+    @Override
+    public List<CategoryDTO> findAllCategoryDTO() {
+        return categoryRepository.findAllCategoryDTO();
     }
 
     @Override

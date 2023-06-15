@@ -1,4 +1,4 @@
-package com.cg.model.dto;
+package com.cg.model.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class ProductAvatarDTO {
+public class ProductAvatarCreateResDTO {
 
     private String id;
     private String fileName;

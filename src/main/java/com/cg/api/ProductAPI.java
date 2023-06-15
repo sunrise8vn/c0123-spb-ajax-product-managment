@@ -4,9 +4,9 @@ import java.util.*;
 import com.cg.exception.DataInputException;
 import com.cg.model.Category;
 import com.cg.model.Product;
-import com.cg.model.dto.ProductCreateReqDTO;
-import com.cg.model.dto.ProductCreateResDTO;
-import com.cg.model.dto.ProductDTO;
+import com.cg.model.dto.product.ProductCreateReqDTO;
+import com.cg.model.dto.product.ProductCreateResDTO;
+import com.cg.model.dto.product.ProductDTO;
 import com.cg.service.category.ICategoryService;
 import com.cg.service.product.IProductService;
 

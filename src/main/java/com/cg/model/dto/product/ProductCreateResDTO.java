@@ -1,4 +1,4 @@
-package com.cg.model.dto;
+package com.cg.model.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
