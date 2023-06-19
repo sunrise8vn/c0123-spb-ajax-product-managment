@@ -13,4 +13,14 @@ public class HomeController {
     public String showHomePage() {
         return "home";
     }
+
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "login";
+    }
+
+    @GetMapping("/403")
+    public String show403Page() {
+        return "error/403";
+    }
 }

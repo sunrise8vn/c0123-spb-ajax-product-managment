@@ -73,7 +73,7 @@
                                             Change image
                                         </div>
                                     </div>
-                                    <input type="file" id="imageFileCre" accept="image/jpeg, image/png" hidden/>
+                                    <input type="file" id="imageFileCre" accept="image/jpeg, image/png" hidden multiple/>
                                 </section>
                             </div>
                         </fieldset>
@@ -81,10 +81,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="btnCreate" class="btn btn-outline-success">
-                        <i class="fa fa-plus"></i>
-                        Create
-                    </button>
+                    <th:block th:if="${roleCode == 'ADMIN'}">
+                        <button type="button" id="btnCreate" class="btn btn-outline-success">
+                            <i class="fa fa-plus"></i>
+                            Create
+                        </button>
+                    </th:block>
                 </div>
             </div>
         </div>

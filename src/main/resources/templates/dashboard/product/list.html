@@ -177,7 +177,12 @@
                     page.dialogs.elements.modalCreateProduct.modal('hide');
                 })
                 .fail((jqXHR) => {
-                    console.log(jqXHR)
+                    console.log(jqXHR.status)
+                    const statusCode = jqXHR.status;
+
+                    if (statusCode === 403) {
+                        alert('Bạn không có quyền thực hiện chức năng này')
+                    }
                 })
         }
 
