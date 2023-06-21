@@ -1,7 +1,9 @@
 package com.cg.service.cartDetail;
 
 
+import com.cg.model.Cart;
 import com.cg.model.CartDetail;
+import com.cg.model.dto.cart.CartDetailItemResDTO;
 import com.cg.repository.CartDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,16 @@ public class CartDetailServiceImpl implements ICartDetailService {
     @Override
     public List<CartDetail> findAll() {
         return null;
+    }
+
+    @Override
+    public List<CartDetail> findAllByCart(Cart cart) {
+        return cartDetailRepository.findAllByCart(cart);
+    }
+
+    @Override
+    public List<CartDetailItemResDTO> getAllCartDetailItemResDTO(Cart cart) {
+        return cartDetailRepository.getAllCartDetailItemResDTO(cart);
     }
 
     @Override

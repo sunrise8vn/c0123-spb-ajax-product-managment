@@ -1,5 +1,6 @@
 package com.cg.model;
 
+import com.cg.model.enums.EBill;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

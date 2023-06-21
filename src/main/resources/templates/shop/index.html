@@ -61,6 +61,8 @@
             urls: {
                 getAllCategories: AppBase.API_CATEGORY,
                 getAllProducts: AppBase.API_PRODUCT,
+                getAllCartDetails: AppBase.API_CART,
+                addToCart: AppBase.API_CART + '/add-to-cart'
             },
             elements: {},
             commands: {},
@@ -70,7 +72,8 @@
             },
         }
 
-        page.elements.productCarts = $('#product-carts')
+        page.elements.productCarts = $('#product-carts');
+        page.elements.totalQuantity = $('#totalQuantity');
 
         page.commands.getAllProducts = () => {
             $.ajax({
@@ -83,6 +86,8 @@
 
                         page.elements.productCarts.prepend(str)
                     })
+
+                    page.commands.handleAddToCart();
                 })
                 .fail((jqXHR) => {
                     console.log(jqXHR)
@@ -101,14 +106,78 @@
                             <span>${obj.price} đ</span>
                             <span>${obj.unit}</span>
                         </div>
-                        <button class="btn btn-outline-primary">Add to cart</button>
+                        <button class="btn btn-outline-primary add-to-cart" data-product-id="${obj.id}">Add to cart</button>
                     </div>
                 </div>
             `;
         }
 
+
+        page.commands.getAllCartDetails = () => {
+            $.ajax({
+                type: 'GET',
+                url: page.urls.getAllCartDetails
+            })
+                .done((data) => {
+
+                    if (data !== null) {
+                        $.each(data, (index, item) => {
+                            let totalQuantity = 0;
+                            $.each(data, (index, item) => {
+                                totalQuantity += item.quantity;
+                            })
+
+                            page.elements.totalQuantity.text(totalQuantity);
+                        })
+                    }
+                })
+                .fail((jqXHR) => {
+                    console.log(jqXHR)
+                })
+        }
+
+        page.commands.handleAddToCart = () => {
+            $('.add-to-cart').on('click', function () {
+                const productId = $(this).data('product-id');
+                const quantity = 1;
+
+                const obj = {
+                    productId,
+                    quantity
+                }
+
+                page.commands.addToCart(obj);
+
+            })
+        }
+
+        page.commands.addToCart = (obj) => {
+            $.ajax({
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                },
+                type: 'POST',
+                url: page.urls.addToCart,
+                data: JSON.stringify(obj)
+            })
+                .done((data) => {
+                    let totalQuantity = 0;
+                    $.each(data, (index, item) => {
+                        totalQuantity += item.quantity;
+                    })
+
+                    page.elements.totalQuantity.text(totalQuantity);
+                })
+                .fail((jqXHR) => {
+                    alert('error')
+                })
+        }
+
         page.loadData = () => {
             page.commands.getAllProducts();
+
+            // page.commands.getAllCartDetails();
         }
 
         page.initializeControlEvent = () => {

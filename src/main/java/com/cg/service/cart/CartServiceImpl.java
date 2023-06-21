@@ -37,12 +37,17 @@ public class CartServiceImpl implements ICartService {
     }
 
     @Override
+    public Optional<Cart> findByUser(User user) {
+        return cartRepository.findByUser(user);
+    }
+
+    @Override
     public Cart addToCart(CartItemReqDTO cartItemReqDTO, Product product, User user) {
 
         Optional<Cart> cartOptional = cartRepository.findByUser(user);
+        Cart cart = new Cart();
 
         if (cartOptional.isEmpty()) {
-            Cart cart = new Cart();
             cart.setUser(user);
             cart.setTotalAmount(BigDecimal.ZERO);
             cartRepository.save(cart);
@@ -66,8 +71,64 @@ public class CartServiceImpl implements ICartService {
             cartRepository.save(cart);
 
         }
+        else {
+            cart = cartOptional.get();
+            Optional<CartDetail> cartDetailOptional = cartDetailRepository.findByCartAndProduct(cart, product);
 
-        return null;
+            if (cartDetailOptional.isEmpty()) {
+                BigDecimal price = product.getPrice();
+                Long quantity = cartItemReqDTO.getQuantity();
+                BigDecimal amount = price.multiply(BigDecimal.valueOf(quantity));
+
+                CartDetail cartDetail = new CartDetail();
+                cartDetail.setCart(cart);
+                cartDetail.setProduct(product);
+                cartDetail.setTitle(product.getTitle());
+                cartDetail.setPrice(product.getPrice());
+                cartDetail.setUnit(product.getUnit());
+                cartDetail.setQuantity(cartItemReqDTO.getQuantity());
+                cartDetail.setAmount(amount);
+                cartDetailRepository.save(cartDetail);
+
+                List<CartDetail> cartDetailList = cartDetailRepository.findAllByCart(cart);
+                BigDecimal totalAmount = BigDecimal.ZERO;
+
+                for(CartDetail item : cartDetailList) {
+                    BigDecimal itemAmount = item.getAmount();
+                    totalAmount = totalAmount.add(itemAmount);
+                }
+
+                cart.setTotalAmount(totalAmount);
+                cartRepository.save(cart);
+            }
+            else {
+                CartDetail cartDetail = cartDetailOptional.get();
+                long currentQuantity = cartDetail.getQuantity();
+                long newQuantity = cartItemReqDTO.getQuantity();
+                long updateQuantity = currentQuantity + newQuantity;
+
+                BigDecimal price = product.getPrice();
+                BigDecimal amount = price.multiply(BigDecimal.valueOf(updateQuantity));
+
+                cartDetail.setPrice(price);
+                cartDetail.setQuantity(updateQuantity);
+                cartDetail.setAmount(amount);
+                cartDetailRepository.save(cartDetail);
+
+                List<CartDetail> cartDetailList = cartDetailRepository.findAllByCart(cart);
+                BigDecimal totalAmount = BigDecimal.ZERO;
+
+                for(CartDetail item : cartDetailList) {
+                    BigDecimal itemAmount = item.getAmount();
+                    totalAmount = totalAmount.add(itemAmount);
+                }
+
+                cart.setTotalAmount(totalAmount);
+                cartRepository.save(cart);
+            }
+        }
+
+        return cart;
     }
 
     @Override

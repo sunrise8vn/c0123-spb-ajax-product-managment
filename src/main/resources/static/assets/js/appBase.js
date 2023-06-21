@@ -2,6 +2,7 @@ class AppBase {
     static DOMAIN_SERVER = location.origin
     static API_SERVER = this.DOMAIN_SERVER + '/api'
 
+    static API_CART = this.API_SERVER + '/carts'
     static API_CATEGORY = this.API_SERVER + '/categories'
     static API_PRODUCT = this.API_SERVER + '/products'
     static IMAGE_SCALE_W_280_h_180_Q_100 = 'c_scale,w_280,h_180,q_100'

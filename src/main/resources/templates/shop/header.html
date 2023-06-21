@@ -16,6 +16,14 @@
 
                     </div>
                     <form class="d-flex" role="search">
+                        <button class="btn btn-outline-light m-3 cart-button" type="button">
+
+                            <span class="count-holder">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="count" id="totalQuantity" th:text="${totalQuantity}">0</span>
+                            </span>
+                            <span class="box-text">Giỏ hàng</span>
+                        </button>
                         <button class="btn btn-outline-light m-3 " type="button" data-bs-toggle="modal"
                                 data-bs-target="#modalCreateProduct">Create
                         </button>
